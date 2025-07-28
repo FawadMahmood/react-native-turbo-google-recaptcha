@@ -1,5 +1,7 @@
 #import <TurboGoogleRecaptchaSpec/TurboGoogleRecaptchaSpec.h>
 
-@interface TurboGoogleRecaptcha : NSObject <NativeTurboGoogleRecaptchaSpec>
+#import <RecaptchaEnterprise/RecaptchaEnterprise.h>
 
+@interface TurboGoogleRecaptcha : NSObject <NativeTurboGoogleRecaptchaSpec>
+    @property (strong, atomic) RecaptchaClient *recaptchaClient;
 @end

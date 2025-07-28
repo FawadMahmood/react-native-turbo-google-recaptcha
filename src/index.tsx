@@ -1,5 +1,5 @@
 import TurboGoogleRecaptcha from './NativeTurboGoogleRecaptcha';
 
-export function multiply(a: number, b: number): number {
-  return TurboGoogleRecaptcha.multiply(a, b);
+export function initRecaptcha(siteKey: string): Promise<boolean> {
+  return TurboGoogleRecaptcha.initRecaptcha(siteKey);
 }

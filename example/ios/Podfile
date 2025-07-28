@@ -19,6 +19,9 @@ end
 target 'TurboGoogleRecaptchaExample' do
   config = use_native_modules!
 
+  pod 'RecaptchaEnterprise', :modular_headers => true
+  pod 'RecaptchaInterop', :modular_headers => true
+
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.

@@ -1,12 +1,27 @@
+import { useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { multiply } from 'react-native-turbo-google-recaptcha';
+import { initRecaptcha } from 'react-native-turbo-google-recaptcha';
 
-const result = multiply(3, 7);
-
+const API_KEY = 'demo-key';
 export default function App() {
+  useEffect(() => {
+    const initializeRecaptcha = async () => {
+      try {
+        const result = await initRecaptcha(API_KEY);
+        console.log('Recaptcha initialized:', result);
+        return result;
+      } catch (error) {
+        console.error('Recaptcha initialization failed:', error);
+        return false;
+      }
+    };
+
+    initializeRecaptcha();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Result:</Text>
     </View>
   );
 }
