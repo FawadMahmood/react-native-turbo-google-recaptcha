@@ -1660,7 +1660,7 @@ PODS:
   - RecaptchaEnterpriseSDK (18.7.0)
   - RecaptchaInterop (101.0.0)
   - SocketRocket (0.7.1)
-  - TurboGoogleRecaptcha (0.1.0):
+  - TurboGoogleRecaptcha (0.1.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1991,7 +1991,7 @@ SPEC CHECKSUMS:
   RecaptchaEnterpriseSDK: 5e72d7f19d2f679b68c25071c33b40f817e21149
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  TurboGoogleRecaptcha: abe43dd152381046fe758281f2dd64d0bfb00e13
+  TurboGoogleRecaptcha: a7ee4d1d56ccdf90f7155e5d4308f0bce9686aac
   Yoga: 9f110fc4b7aa538663cba3c14cbb1c335f43c13f
 
 PODFILE CHECKSUM: ab21870bae3aa4dff86bc7e8670bc1d0fca3f81f

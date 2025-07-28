@@ -23,4 +23,15 @@ RCT_EXPORT_MODULE()
     ];
 }
 
+- (void)getToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+  [self.recaptchaClient execute:[[RecaptchaAction alloc] initWithAction: RecaptchaActionTypeLogin] completion:^void(NSString* _Nullable  token, NSError* _Nullable error) {
+    if (!token) {
+      reject(@"Error", [NSString stringWithFormat:@"%@/%ld/%@", error.description, (long)error.code, error.domain.description] , [NSError errorWithDomain:@"com.washmen.ios" code:0 userInfo:@{ @"text": @"something happend" }]);
+      NSLog (@"%@", error);
+      return;
+    }
+    resolve(token);
+  }];
+}
+
 @end

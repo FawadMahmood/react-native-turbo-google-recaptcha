@@ -8,6 +8,7 @@ export interface Spec extends TurboModule {
    * @returns Promise<boolean> - resolves true/false, rejects with Error
    */
   initRecaptcha(siteKey: string): Promise<boolean>;
+  getToken(): Promise<string>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('TurboGoogleRecaptcha');
