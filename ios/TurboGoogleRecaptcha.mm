@@ -24,7 +24,18 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)getToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
-  [self.recaptchaClient execute:[[RecaptchaAction alloc] initWithAction: RecaptchaActionTypeLogin] completion:^void(NSString* _Nullable  token, NSError* _Nullable error) {
+  if (!self.recaptchaClient) {
+    reject(@"Error", @"Recaptcha client not initialized", [NSError errorWithDomain:@"com.washmen.ios" code:0 userInfo:@{ @"text": @"Recaptcha client is nil" }]);
+    return;
+  }
+  [self.recaptchaClient execute:[[RecaptchaAction alloc] initWithAction:RecaptchaActionTypeLogin] completion:^void(NSString* _Nullable token, NSError* _Nullable error) {
+    if (error) {
+      NSString *errorDesc = error.localizedDescription ?: @"Unknown error";
+      NSString *errorDomain = error.domain ?: @"Unknown domain";
+      reject(@"Error", [NSString stringWithFormat:@"%@/%ld/%@", errorDesc, (long)error.code, errorDomain], error);
+      NSLog(@"%@", error);
+      return;
+    }
     if (!token) {
       reject(@"Error", [NSString stringWithFormat:@"%@/%ld/%@", error.description, (long)error.code, error.domain.description] , [NSError errorWithDomain:@"com.washmen.ios" code:0 userInfo:@{ @"text": @"something happend" }]);
       NSLog (@"%@", error);
