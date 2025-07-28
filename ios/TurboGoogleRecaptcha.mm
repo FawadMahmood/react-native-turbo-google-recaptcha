@@ -10,8 +10,8 @@ RCT_EXPORT_MODULE()
 }
 
 - (void)initRecaptcha:(nonnull NSString *)siteKey resolve:(nonnull RCTPromiseResolveBlock)resolve reject:(nonnull RCTPromiseRejectBlock)reject {
-    [Recaptcha getClientWithSiteKey:siteKey
-       completionHandler:^void(RecaptchaClient* recaptchaClient, NSError* error) {
+    [Recaptcha fetchClientWithSiteKey:siteKey
+       completion:^void(RecaptchaClient* recaptchaClient, NSError* error) {
          if (!recaptchaClient) {
            NSLog(@"%@", error);
            reject(@"Error", [NSString stringWithFormat:@"%@/%ld/%@", error.localizedDescription, (long)error.code, error.domain], error);
