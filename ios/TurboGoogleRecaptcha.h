@@ -4,4 +4,5 @@
 
 @interface TurboGoogleRecaptcha : NSObject <NativeTurboGoogleRecaptchaSpec>
     @property (strong, atomic) RecaptchaClient *recaptchaClient;
+    @property (nonatomic, strong) NSString *siteKey;
 @end
