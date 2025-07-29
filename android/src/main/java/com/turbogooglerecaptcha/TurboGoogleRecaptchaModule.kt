@@ -22,17 +22,40 @@ class TurboGoogleRecaptchaModule(reactContext: ReactApplicationContext) :
 
   override fun initRecaptcha(siteKey: String, promise: Promise) {
     this.siteKey = siteKey
-    val app = reactApplicationContext.applicationContext as android.app.Application
-    this.reactApplicationContext.currentActivity?.let {
-      Recaptcha.getTasksClient(app, siteKey)
-        .addOnSuccessListener(it) { client ->
-          this.recaptchaTasksClient = client
-          promise.resolve(null)
-        }
-        .addOnFailureListener { e ->
-          promise.reject(e)
-        }
+    val app = reactApplicationContext.applicationContext as? android.app.Application
+      ?: return promise.reject("NoApplicationContext", "Application context is not available")
+    val activity = this.reactApplicationContext.currentActivity
+    if (activity == null) {
+      promise.reject("NoCurrentActivity", "Current activity is not available")
+      return
     }
+    Recaptcha.getTasksClient(app, siteKey)
+      .addOnSuccessListener(activity) { client ->
+        this.recaptchaTasksClient = client
+        promise.resolve(null)
+      }
+      .addOnFailureListener { e ->
+        promise.reject(e)
+      }
+  }
+
+  private fun initializeRecaptchaAndGetToken(siteKey: String, activity: android.app.Activity, promise: Promise) {
+    val app = reactApplicationContext.applicationContext as? android.app.Application
+      ?: return promise.reject("NoApplicationContext", "Application context is not available")
+    Recaptcha.getTasksClient(app, siteKey)
+      .addOnSuccessListener(activity) { newClient ->
+        this.recaptchaTasksClient = newClient
+        newClient.executeTask(RecaptchaAction.LOGIN)
+          .addOnSuccessListener(activity) { token ->
+            promise.resolve(token)
+          }
+          .addOnFailureListener { e ->
+            promise.reject(e)
+          }
+      }
+      .addOnFailureListener { e ->
+        promise.reject(e)
+      }
   }
 
   override fun getToken(promise: Promise) {
@@ -46,6 +69,10 @@ class TurboGoogleRecaptchaModule(reactContext: ReactApplicationContext) :
         .addOnFailureListener { e ->
           promise.reject(e)
         }
+    } else if (siteKey != null && activity != null) {
+      initializeRecaptchaAndGetToken(siteKey!!, activity, promise)
+    } else {
+      promise.reject("RecaptchaNotInitialized", "Recaptcha client is not initialized and siteKey is missing. Call initRecaptcha first.")
     }
   }
 
